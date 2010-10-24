@@ -4,12 +4,12 @@ class config
 {
 	public static function docroot()
 	{
-		return 'C:/www/study.dev.lab.emkal.ca';
+		return '/path/to/webroot';
 	}
 	
 	public static function prefix()
 	{
-		return '';
+		return '/path/to/application';
 	}
 	
 	public static function db_server()
@@ -19,17 +19,17 @@ class config
 	
 	public static function db_username()
 	{
-		return 'study';
+		return 'username';
 	}
 	
 	public static function db_password()
 	{
-		return 'cs2KsFwzLVd6Mt6q';
+		return 'password';
 	}
 	
 	public static function db_database()
 	{
-		return 'study';
+		return 'database';
 	}
 }
 
