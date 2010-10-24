@@ -3,12 +3,19 @@
 ini_set('display_errors', 1);
 
 // bootstrap the autoloader
-require('autoload/config.php');
-require('autoload/util.php');
+require('system/config.php');
+require('system/util.php');
 
 function __autoload($autoload)
 {
-	include_once(util::base() . '/autoload/' . $autoload . '.php');
+	if(file_exists(util::base() . '/application/' . $autoload . '.php'))
+	{
+		include(util::base() . '/application/' . $autoload . '.php');
+	}
+	else
+	{
+		include(util::base() . '/system/' . $autoload . '.php');
+	}
 }
 
 engine::run();
