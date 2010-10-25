@@ -4,19 +4,13 @@ class uuid
 {
 	public static function check($uuid)
 	{
-		return preg_match('/[0-9a-z]{25}/', $uuid);
+		return preg_match('/[a-z]{28}/', $uuid);
 	}
 
 	public static function gen()
 	{
 		$uuid = '';
-		for($i = 0; $i < 25; $i++)
-		{
-			$x = rand(48, 83);
-			if($x >= 58) $x += 39;
-			$uuid .= chr($x);
-		}
-		
+		for($i = 0; $i < 28; $i++) $uuid .= rand(97, 122);
 		return $uuid;
 	}
 }
