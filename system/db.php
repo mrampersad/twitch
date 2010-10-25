@@ -78,6 +78,11 @@ class db
 		return $id;
 	}
 	
+	public function affected()
+	{
+		return mysql_affected_rows($this->link);
+	}
+	
 	public function get($id, $table)
 	{
 		return $this->query('select * from `' . $table . '` where id=' . $this->esc($id))->fetch();
