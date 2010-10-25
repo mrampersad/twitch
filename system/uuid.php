@@ -10,7 +10,7 @@ class uuid
 	public static function gen()
 	{
 		$uuid = '';
-		for($i = 0; $i < 28; $i++) $uuid .= rand(97, 122);
+		for($i = 0; $i < 28; $i++) $uuid .= chr(rand(97, 122));
 		return $uuid;
 	}
 }
