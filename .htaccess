@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Installation directory.
+RewriteBase /
+
 # Take anything that's not a file.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* /index.php
