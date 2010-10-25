@@ -54,8 +54,8 @@ class db
 	public function esc($v)
 	{
 		if(is_null($v)) return 'NULL';
-		if(is_numeric($v)) return $v;
-		return "'" . mysql_real_escape_string($v) . "'";
+		if(is_float($v) || is_integer($v)) return $v;
+		return "'" . mysql_real_escape_string((string)$v) . "'";
 	}
 	
 	public function set(&$id, $table, $field)
