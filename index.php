@@ -12,7 +12,7 @@ function __autoload($autoload)
 	{
 		include(util::base() . '/application/' . $autoload . '.php');
 	}
-	else
+	elseif(file_exists(util::base() . '/system/' . $autoload . '.php'))
 	{
 		include(util::base() . '/system/' . $autoload . '.php');
 	}
