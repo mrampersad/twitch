@@ -1,6 +1,6 @@
 <?php
 
-class tx_ctrl extends ctrl
+class trn_ctrl extends ctrl
 {
 	protected $message;
 	protected $id;
@@ -133,7 +133,7 @@ class tx_ctrl extends ctrl
 							unset($entry);
 							
 							$this->db->query('commit');
-							util::redirect('tx', 'load', array('id' => $this->id));
+							util::redirect('trn', 'load', array('id' => $this->id));
 						}
 						else
 						{
@@ -152,7 +152,7 @@ class tx_ctrl extends ctrl
 				
 				break;
 			case 'cancel':
-				util::redirect('access');
+				util::redirect('secure');
 			case 'remove':
 				$i = key($_POST['action']['remove']);
 				$this->total -= $this->entry[$i]['amount']->value();

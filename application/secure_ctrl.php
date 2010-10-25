@@ -1,6 +1,6 @@
 <?php
 
-class access_ctrl extends ctrl
+class secure_ctrl extends ctrl
 {
 	protected $db;
 	
@@ -37,13 +37,13 @@ class access_ctrl extends ctrl
 		
 		echo '<h1>Transaction List</h1>';
 		echo '<p>' . util::link('Log out', 'log', 'out') . '</p>';
-		echo '<p>' . util::link('New Transaction', 'tx') . '</p>';
+		echo '<p>' . util::link('New Transaction', 'trn') . '</p>';
 		
 		echo '<table>';
 		
 		foreach($this->db->query('select * from trn order by dte') as $trn)
 		{
-			echo '<tr><td colspan="2">' . util::link($trn['name'], 'tx', 'load', array('id' => $trn['id'])) . '</a> ' . $trn['dte'] . '</td></tr>';
+			echo '<tr><td colspan="2">' . util::link($trn['name'], 'trn', 'load', array('id' => $trn['id'])) . '</a> ' . $trn['dte'] . '</td></tr>';
 			
 			foreach($this->db->query('select ent.amount, acc.name from ent inner join acc on ent.acc_id = acc.id where trn_id=? order by ent.amount desc', $trn['id']) as $ent)
 			{

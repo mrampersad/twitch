@@ -68,7 +68,7 @@ class acc_ctrl extends ctrl
 				$this->save();
 				break;
 			case 'cancel':
-				util::redirect('access');
+				util::redirect('secure');
 		}
 	}
 	
