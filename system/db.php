@@ -20,7 +20,7 @@ class db
 		$this->charset = $charset;
 		
 		$this->link = mysql_connect($this->server, $this->username, $this->password);
-		if(!$this->link) throw new Exception(mysql_error());
+		if(!$this->link) throw new db_ex(mysql_error(), mysql_errno());
 		$this->query('set names ?', $this->charset);
 		$this->query('use ' . $this->database);
 	}
@@ -41,7 +41,7 @@ class db
 		array_shift($this->args);
 		if($this->args) $sql = preg_replace_callback('/\?/', array($this, 'query_helper'), $sql);
 		$res = mysql_query($sql, $this->link);
-		if($res === false) throw new Exception(mysql_error($this->link));
+		if($res === false) throw new db_ex(mysql_error($this->link), mysql_errno($this->link));
 		if($res === true) return true;
 		return new db_res($res);
 	}
