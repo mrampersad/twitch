@@ -17,7 +17,7 @@ class radio
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('input missing');
 		$this->value = $_POST[$this->name];
-		if(!isset($this->set[$this->value])) throw new Exception('invalid selection');
+		if(!in_array($this->value, $this->set)) throw new Exception('invalid selection');
 	}
 	
 	public function value()
