@@ -34,7 +34,7 @@ class radio
 	{
 		echo '<input type="radio"';
 		if($value == $this->value) echo ' checked="checked"';
-		echo ' name="' . util::html($this->name) . '" value="' . util::html($this->value) . '" />';
+		echo ' name="' . util::html($this->name) . '" value="' . util::html($value) . '" />';
 	}
 }
 
