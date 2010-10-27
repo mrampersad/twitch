@@ -87,6 +87,11 @@ class db
 	{
 		return $this->query('select * from `' . $table . '` where id=' . $this->esc($id))->fetch();
 	}
+	
+	public function del($id, $table)
+	{
+		return $this->query('delete from `' . $table . '` where id=' . $this->esc($id));
+	}
 }
 
 ?>
