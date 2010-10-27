@@ -1,6 +1,6 @@
 <?php
 
-class text
+class checkbox
 {
 	protected $name;
 	protected $value;
