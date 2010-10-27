@@ -2,6 +2,7 @@
 
 abstract class ctrl
 {
+/*
 	protected $session_id;
 	
 	public function __construct()
@@ -16,6 +17,7 @@ abstract class ctrl
 			throw new Exception('incorrect session');
 		}
 	}
+*/
 }
 
 ?>
