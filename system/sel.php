@@ -20,6 +20,11 @@ class sel
 		if(!isset($this->set[$this->value])) throw new Exception('invalid selection');
 	}
 	
+	public function item()
+	{
+		return isset($this->set[$this->value]) ? $this->set[$this->value] : null;
+	}
+	
 	public function value()
 	{
 		return $this->value;
