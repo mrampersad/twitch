@@ -4,7 +4,7 @@ class util
 {
 	public static function webroot()
 	{
-		return 'http://' . $_SERVER['HTTP_HOST'] . config::prefix();
+		return (isset($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . config::prefix();
 	}
 	
 	public static function base()
