@@ -66,7 +66,7 @@ class db
 		return "'" . mysql_real_escape_string((string)$v) . "'";
 	}
 	
-	public function set(&$id, $table, $field)
+	public function set($table, &$id, $field)
 	{
 		$query = '';
 		foreach($field as $key => $value) $query .= ",`$key`=" . $this->esc($value);
@@ -91,7 +91,7 @@ class db
 		return mysql_affected_rows($this->link);
 	}
 	
-	public function get($id, $table)
+	public function get($table, $id)
 	{
 		return $this->query('select * from `' . $table . '` where id=' . $this->esc($id))->fetch();
 	}
