@@ -34,12 +34,20 @@ class db
 	{
 		$this->connect($this->server, $this->username, $this->password, $this->database, $this->charset);
 	}
-	
+
+	// called with just $sql, passes through query untouched
+	// called with $sql, $arg1, $arg2, $arg3, replaces ? in $sql with $arg1, $arg2, $arg3
+	// called with $sql, array($arg1, $arg2, $arg3) replaces ? in $sql with $arg1, $arg2, $arg3
 	public function query($sql)
 	{
-		$this->args = func_get_args();
-		array_shift($this->args);
-		if($this->args) $sql = preg_replace_callback('/\?/', array($this, 'query_helper'), $sql);
+		if(func_num_args() > 1)
+		{
+			$this->args = func_get_args();
+			array_shift($this->args);
+			if(is_array($this->args[0])) $this->args = $this->args[0];
+			$sql = preg_replace_callback('/\?/', array($this, 'query_helper'), $sql);
+		}
+		
 		$res = mysql_query($sql, $this->link);
 		if($res === false) throw new db_ex(mysql_error($this->link), mysql_errno($this->link));
 		if($res === true) return true;
