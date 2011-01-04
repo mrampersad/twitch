@@ -10,6 +10,21 @@ class state
 		return $uuid;
 	}
 	
+	public static function destroy($obj)
+	{
+		foreach(array_keys($_SESSION['ctrl']) as $k)
+		{
+			if($_SESSION['ctrl'][$k] === $obj)
+			{
+				unset($_SESSION['ctrl'][$k]);
+				unlink(util::base() . '/state/' . $k);
+				return;
+			}
+		}
+		
+		throw new exception('invalid object');
+	}
+	
 	public static function load($uuid)
 	{
 		if(!uuid::check($uuid)) throw new Exception('expected uuid');
