@@ -2,37 +2,33 @@
 
 class db
 {
-	protected $server;
-	protected $username;
-	protected $password;
-	protected $database;
-	protected $charset;
+	protected static $instance = null;
+	
+	public static function get_instance()
+	{
+		if(is_null(db::$instance)) db::$instance = new db();
+		return db::$instance;
+	}
 	
 	protected $link;
 	protected $args;
 
-	public function connect($server, $username, $password, $database, $charset = 'utf8')
+	public function __construct()
 	{
-		$this->server = $server;
-		$this->username = $username;
-		$this->password = $password;
-		$this->database = $database;
-		$this->charset = $charset;
-		
-		$this->link = mysql_connect($this->server, $this->username, $this->password);
-		if(!$this->link) throw new db_ex(mysql_error(), mysql_errno());
-		$this->query('set names ?', $this->charset);
-		$this->query('use ' . $this->database);
+		$this->connect();
 	}
 	
-	public function __sleep()
+	public function connect()
 	{
-		return array('server', 'username', 'password', 'database', 'charset');
+		$this-link = mysql_connect(config::db_host, config::db_user, config::db_pass);
+		if(!$this->link) throw new db_ex(mysql_error(), mysql_errno());
+		$this->query('set names ?', config::db_charset);
+		$this->query('use ' . config::db_database);
 	}
 	
 	public function __wakeup()
 	{
-		$this->connect($this->server, $this->username, $this->password, $this->database, $this->charset);
+		$this->connect();
 	}
 
 	// called with just $sql, passes through query untouched
@@ -66,39 +62,9 @@ class db
 		return "'" . mysql_real_escape_string((string)$v) . "'";
 	}
 	
-	public function set($table, &$id, $field)
-	{
-		$query = '';
-		foreach($field as $key => $value) $query .= ",`$key`=" . $this->esc($value);
-		$query = " `$table` set " . substr($query, 1);
-		
-		if($id)
-		{
-			$this->query('update' . $query . ' where id=' . $this->esc($id));
-		}
-		else
-		{
-			$this->query('insert' . $query);
-			$ida = $this->query('select last_insert_id() id')->fetch();
-			$id = $ida['id'];
-		}
-		
-		return $id;
-	}
-	
 	public function affected()
 	{
 		return mysql_affected_rows($this->link);
-	}
-	
-	public function get($table, $id)
-	{
-		return $this->query('select * from `' . $table . '` where id=' . $this->esc($id))->fetch();
-	}
-	
-	public function del($id, $table)
-	{
-		return $this->query('delete from `' . $table . '` where id=' . $this->esc($id));
 	}
 }
 
