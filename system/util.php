@@ -12,7 +12,7 @@ class util
 		return config::docroot() . config::prefix();
 	}
 	
-	public static function form($ctrl, $func = 'post', $req = array())
+	public static function form($ctrl = null, $func = 'post', $req = array())
 	{
 		echo '<form action="' . util::html(util::href($ctrl, $func)) . '" method="post" enctype="multipart/form-data">';
 	}
@@ -20,7 +20,8 @@ class util
 	public static function href($ctrl = 'home', $func = 'index', $req = array(), $sep = '&')
 	{
 		if($ctrl instanceof ctrl) $ctrl = state::save($ctrl);
-		return util::webroot() . '/' . $ctrl . '/' . $func . '?' . http_build_query($req, '', $sep);
+		elseif($ctrl === null) $ctrl = req::$controller;
+		return util::webroot() . $ctrl . '/' . $func . '?' . http_build_query($req, '', $sep);
 	}
 	
 	public static function redirect($ctrl = 'home', $func = 'index', $req = array())

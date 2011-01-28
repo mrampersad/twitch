@@ -4,12 +4,12 @@ class config
 {
 	public static function docroot()
 	{
-		return '/path/to/webroot';
+		return '/filesystem/path';
 	}
 	
 	public static function prefix()
 	{
-		return '/url/path';
+		return '/url/path/';
 	}
 }
 
