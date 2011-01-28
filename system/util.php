@@ -27,7 +27,6 @@ class util
 	public static function redirect($ctrl = 'home', $func = 'index', $req = array())
 	{
 		header('Location: ' . util::href($ctrl, $func, $req));
-		exit();
 	}
 	
 	public static function link($body = 'Home', $ctrl = 'home', $func = 'index', $req = array())
