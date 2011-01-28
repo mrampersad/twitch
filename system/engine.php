@@ -23,7 +23,7 @@ class engine
 
 		unset($path);
 
-		session_start();
+		session::get_instance()->start();
 
 		if(uuid::check(req::$controller))
 		{
