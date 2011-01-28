@@ -20,10 +20,10 @@ class db
 	
 	public function connect()
 	{
-		$this->link = mysql_connect(config::db_host, config::db_user, config::db_pass);
+		$this->link = mysql_connect(config::db_host(), config::db_user(), config::db_pass());
 		if(!$this->link) throw new db_ex(mysql_error(), mysql_errno());
-		$this->query('set names ?', config::db_charset);
-		$this->query('use ' . config::db_database);
+		$this->query('set names ?', config::db_charset());
+		$this->query('use ' . config::db_database());
 	}
 	
 	public function __wakeup()
