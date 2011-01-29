@@ -14,6 +14,12 @@ class session
 	{
 		session_start();
 	}
+	
+	public function regenerate()
+	{
+		session_regenerate_id();
+		state::key_clear();
+	}
 }
 
 ?>

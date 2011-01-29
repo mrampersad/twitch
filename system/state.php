@@ -22,6 +22,11 @@ class state
 		if(!isset($_SESSION['state_key'])) $_SESSION['state_key'] = uuid::gen();
 		return $_SESSION['state_key'];
 	}
+	
+	public static function key_clear()
+	{
+		unset($_SESSION['state_key']);
+	}
 }
 
 ?>
