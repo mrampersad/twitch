@@ -11,6 +11,11 @@ class pass
 		$this->value = $value;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('Form Incomplete.');
@@ -29,7 +34,11 @@ class pass
 	
 	public function render()
 	{
-		echo '<input type="password" name="' . $this->name . '" />';
+		echo '<input';
+		echo ' id="' . $this->name . '"';
+		echo ' type="password"';
+		echo ' name="' . $this->name . '"';
+		echo ' />';
 	}
 }
 

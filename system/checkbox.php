@@ -11,6 +11,11 @@ class checkbox
 		$this->value = $value;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		$this->value = (integer)isset($_POST[$this->name]);
@@ -28,7 +33,11 @@ class checkbox
 	
 	public function render()
 	{
-		echo '<input type="checkbox" name="' . $this->name . '" value="1"';
+		echo '<input';
+		echo ' id="' . $this->name . '"';
+		echo ' type="checkbox"';
+		echo ' name="' . $this->name . '"';
+		echo ' value="1"';
 		if($this->value) echo ' checked="checked"';
 		echo ' />';
 	}

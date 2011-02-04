@@ -11,6 +11,11 @@ class text
 		$this->value = $value;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('Form Incomplete.');
@@ -29,7 +34,12 @@ class text
 	
 	public function render()
 	{
-		echo '<input type="text" name="' . $this->name . '" value="' . util::html($this->value) . '" />';
+		echo '<input';
+		echo ' type="text"';
+		echo ' id="' . $this->name . '"';
+		echo ' name="' . $this->name . '"';
+		echo ' value="' . util::html($this->value) . '"';
+		echo ' />';
 	}
 }
 

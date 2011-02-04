@@ -11,6 +11,11 @@ class textarea
 		$this->value = $value;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('Form Incomplete.');
@@ -29,7 +34,9 @@ class textarea
 	
 	public function render()
 	{
-		echo '<textarea name="' . $this->name . '">' . util::html($this->value) . '</textarea>';
+		echo '<textarea';
+		echo ' name="' . $this->name . '"';
+		echo '>' . util::html($this->value) . '</textarea>';
 	}
 }
 

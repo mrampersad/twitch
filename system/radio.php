@@ -13,6 +13,11 @@ class radio
 		$this->set = &$set;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('input missing');
@@ -32,9 +37,13 @@ class radio
 	
 	public function render($value)
 	{
-		echo '<input type="radio"';
+		echo '<input';
+		echo ' type="radio"';
 		if($value == $this->value) echo ' checked="checked"';
-		echo ' name="' . util::html($this->name) . '" value="' . util::html($value) . '" />';
+		echo ' id="' . $this->name . '"';
+		echo ' name="' . util::html($this->name) . '"';
+		echo ' value="' . util::html($value) . '"';
+		echo ' />';
 	}
 }
 

@@ -13,6 +13,11 @@ class sel
 		$this->set = &$set;
 	}
 	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
 	public function post()
 	{
 		if(!isset($_POST[$this->name])) throw new Exception('input missing');
@@ -37,15 +42,16 @@ class sel
 	
 	public function render()
 	{
-		echo '<select name="' . $this->name . '">';
+		echo '<select';
+		echo ' id="' . $this->name . '"';
+		echo ' name="' . $this->name . '"';
+		echo '>';
 		foreach($this->set as $k => $v)
 		{
-			echo '<option value="' . util::html($k) . '"';
+			echo '<option';
+			echo ' value="' . util::html($k) . '"';
 			if($k == $this->value) echo ' selected="selected"';
-			echo '>';
-			
-			echo util::html($v);
-			echo '</option>';
+			echo '>' . util::html($v) . '</option>';
 		}
 		echo '</select>';
 	}
