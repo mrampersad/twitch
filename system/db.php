@@ -12,9 +12,12 @@ class db
 	
 	protected $link;
 	protected $args;
+	protected $trans;
 
 	public function __construct()
 	{
+		$this->trans = false;
+		
 		$this->connect();
 	}
 	
@@ -65,6 +68,33 @@ class db
 	public function affected()
 	{
 		return mysql_affected_rows($this->link);
+	}
+	
+	public function in_trans()
+	{
+		return $this->trans;
+	}
+	
+	public function begin()
+	{
+		if($this->trans) throw new Exception('In transaction.');
+		
+		$this->query('begin');
+		$this->trans = 1;
+	}
+	
+	public function commit()
+	{
+		if(!$this->trans) throw new Exception('Not in transaction.');
+		$this->query('commit');
+		$this->trans = 0;
+	}
+	
+	public function rollback()
+	{
+		if(!$this->trans) throw new Exception('Not in transaction.');
+		$this->query('rollback');
+		$this->trans = 0;
 	}
 }
 
