@@ -13,6 +13,11 @@ class html
 	public static function text(field $field, $extra = '') { printf('<input type="text" %s name="%s" value="%s" />', $extra, $field->name, $field->value); }
 	public static function radio(field $field, $value, $extra = '') { printf('<input type="radio" %s name="%s" value="%s" %s />', $extra, $field->name, $value, $field->value == $value ? 'checked="checked"' : ''); }
 	
+	public static function select(field $field, $extra = '')
+	{
+		printf('<select %s name="%s" %s>', $extra, $field->name, $field->type == 1 ? 'multiple="multiple"' : '');
+	}
+	
 	public static function option(field $field, $value, $name, $extra = '')
 	{
 		switch($field->type)
