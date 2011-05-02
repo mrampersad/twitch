@@ -26,7 +26,7 @@ class invoice_view
 		html::text($this->ctrl->invoice->currency_code);
 		echo '</div>';
 		
-		echo html::select($this->ctrl->invoice->discount);
+		echo html::select($this->ctrl->invoice->discount, 'multiple="multiple"');
 		
 		foreach(array('5' => '5% Sale', '10' => '10% Employee') as $k => $v)
 		{

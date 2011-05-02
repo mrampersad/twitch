@@ -21,7 +21,7 @@ class field
 	
 	public function post()
 	{
-		if(isset($_POST[$this->name])
+		if(isset($_POST[$this->name]))
 		{
 			if(!is_array($_POST[$this->name])) throw new Exception('POST Error');
 			foreach(array_keys($_POST[$this->name]) as $k) $_POST[$this->name][$k] = trim($_POST[$this->name][$k]);
@@ -33,25 +33,6 @@ class field
 			if($this->type == 0) throw new Exception('POST Error');
 			$this->value = null;
 		}
-		
-		/*
-		
-		switch($this->type)
-		{
-			case 0:
-				if(!isset($_POST[$this->name]) || !is_array($_POST[$this->name]) || !count($_POST[$this->name])) throw new Exception('POST Error');
-				$this->value = trim(array_shift($_POST[$this->name]));
-				if($this->value === '') $this->value = null;
-				break;
-			case 1:
-				if(isset($_POST[$this->name]) && !is_array($_POST[$this->name])) throw new Exception('POST Error');
-				$this->value = empty($_POST[$this->name]) ? null : join(',', $_POST[$this->name]);
-				break;
-			default:
-				throw new Exception('Type not implemented.');
-		}
-		
-		*/
 	}
 	
 	public function __toString() { return (string)$this->value; }
