@@ -4,28 +4,30 @@ class state
 {
 	public static function save($obj)
 	{
-		$uuid = uuid::gen();
-		file_put_contents(util::base() . '/state/' . $uuid, serialize(array(state::key(), $obj)));
-		return $uuid;
+		$db = config::state_db();
+		$id = uuid::gen();
+		$db->query('insert into `state` set `id`=?, `session_id`=?, `data`=?', $id, session::get_instance()->id, serialize($obj));
+		return $id;
 	}
 	
-	public static function load($uuid)
+	public static function run($id, $function)
 	{
-		if(!uuid::check($uuid)) throw new Exception('expected uuid');
-		list($key, $obj) = unserialize(file_get_contents(util::base() . '/state/' . $uuid));
-		if(state::key() !== $key) throw new Exception('permission denied');
-		return $obj;
-	}
-		
-	public static function key()
-	{
-		if(!isset($_SESSION['state_key'])) $_SESSION['state_key'] = uuid::gen();
-		return $_SESSION['state_key'];
-	}
-	
-	public static function key_clear()
-	{
-		unset($_SESSION['state_key']);
+		if(uuid::check($id))
+		{
+			$db = config::state_db();
+			$row = $db->query('select * from `state` where `id`=? and `session_id`=?', $id, session::get_instance()->id)->fetch();
+			if(!$row) throw new Exception();
+			$obj = unserialize($row['data']);
+			$session = session::get_instance();
+			call_user_func(array($obj, $function));
+			$session->save();
+		}
+		else
+		{
+			$obj = eval('return new ' . $id . '_ctrl();');
+			if(!$obj instanceof ctrl) throw new Exception();
+			util::redirect($obj, $function, $_GET);
+		}
 	}
 }
 

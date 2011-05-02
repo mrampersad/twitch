@@ -2,67 +2,66 @@
 
 class db
 {
-	protected static $instance = null;
-	
-	public static function get_instance()
-	{
-		if(is_null(db::$instance)) db::$instance = new db();
-		return db::$instance;
-	}
-	
 	protected $link;
 	protected $args;
-	protected $trans;
 
 	public function __construct()
 	{
-		$this->trans = false;
-		
-		$this->connect();
+		dtc::get_instance()->register($this);
 	}
 	
-	public function connect()
+	public function connect($host, $user, $pass, $base, $charset)
 	{
-		$this->link = mysql_connect(config::db_host(), config::db_user(), config::db_pass());
-		if(!$this->link) throw new db_ex(mysql_error(), mysql_errno());
-		$this->query('set names ?', config::db_charset());
-		$this->query('use ' . config::db_database());
+		$this->link = mysql_connect($host, $user, $pass);
+		if(!$this->link) throw new Exception(mysql_error(), mysql_errno());
+		$this->query('SET NAMES ?', $charset);
+		$this->query("USE `$base`");
+		$this->in_tx = false;
 	}
 	
-	public function __wakeup()
-	{
-		$this->connect();
-	}
-
-	// called with just $sql, passes through query untouched
-	// called with $sql, $arg1, $arg2, $arg3, replaces ? in $sql with $arg1, $arg2, $arg3
-	// called with $sql, array($arg1, $arg2, $arg3) replaces ? in $sql with $arg1, $arg2, $arg3
 	public function query($sql)
 	{
-		if(func_num_args() > 1)
+		$this->args = func_get_args();
+		array_shift($this->args);
+		
+		if($this->args)
 		{
-			$this->args = func_get_args();
-			array_shift($this->args);
-			if(is_array($this->args[0])) $this->args = $this->args[0];
-			$sql = preg_replace_callback('/\?/', array($this, 'query_helper'), $sql);
+			$sql = preg_replace_callback('/\?/', array($this, 'query_escape'), $sql);
 		}
 		
 		$res = mysql_query($sql, $this->link);
-		if($res === false) throw new db_ex(mysql_error($this->link), mysql_errno($this->link));
-		if($res === true) return true;
+		if(mysql_errno($this->link)) throw new Exception(mysql_error($this->link), mysql_errno($this->link));
 		return new db_res($res);
 	}
 	
-	public function query_helper($m)
+	public function query_escape($m)
 	{
-		return $this->esc(array_shift($this->args));
+		if(!$this->args) throw new Exception('Malformed query.');
+		return $this->escape(array_shift($this->args));
 	}
 	
-	public function esc($v)
+	public function escape($v)
 	{
-		if(is_null($v)) return 'NULL';
-		if(is_float($v) || is_integer($v)) return $v;
-		return "'" . mysql_real_escape_string((string)$v) . "'";
+		if(is_null($v))
+		{
+			return 'NULL';
+		}
+		elseif($v instanceof db_identifier)
+		{
+			return $v->__toString();
+		}
+		elseif($v instanceof db_expression)
+		{
+			return $v->__toString();
+		}
+		elseif(is_numeric($v))
+		{
+			return $v;
+		}
+		else
+		{
+			return "'" . mysql_real_escape_string((string)$v, $this->link) . "'";
+		}
 	}
 	
 	public function affected()
@@ -70,32 +69,9 @@ class db
 		return mysql_affected_rows($this->link);
 	}
 	
-	public function in_trans()
-	{
-		return $this->trans;
-	}
-	
-	public function begin()
-	{
-		if($this->trans) throw new Exception('In transaction.');
-		
-		$this->query('begin');
-		$this->trans = 1;
-	}
-	
-	public function commit()
-	{
-		if(!$this->trans) throw new Exception('Not in transaction.');
-		$this->query('commit');
-		$this->trans = 0;
-	}
-	
-	public function rollback()
-	{
-		if(!$this->trans) throw new Exception('Not in transaction.');
-		$this->query('rollback');
-		$this->trans = 0;
-	}
+	public function begin() { $this->query('begin'); }
+	public function commit() { $this->query('commit'); }
+	public function rollback() { $this->query('rollback'); }
 }
 
 ?>

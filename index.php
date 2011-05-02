@@ -3,7 +3,7 @@
 ini_set('display_errors', 1);
 
 // bootstrap the autoloader
-require('system/config.php');
+require('application/config.php');
 require('system/util.php');
 
 function __autoload($autoload)

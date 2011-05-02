@@ -12,24 +12,23 @@ class util
 		return config::docroot() . config::prefix();
 	}
 	
-	public static function form($ctrl = null, $func = 'post', $req = array())
+	public static function form($ctrl, $func = 'post')
 	{
 		echo '<form action="' . util::html(util::href($ctrl, $func)) . '" method="post" enctype="multipart/form-data">';
 	}
 	
-	public static function href($ctrl = 'home', $func = 'index', $req = array(), $sep = '&')
+	public static function href($ctrl, $func = 'index', $req = array(), $sep = '&')
 	{
 		if($ctrl instanceof ctrl) $ctrl = state::save($ctrl);
-		elseif($ctrl === null) $ctrl = req::$controller;
 		return util::webroot() . $ctrl . '/' . $func . '?' . http_build_query($req, '', $sep);
 	}
 	
-	public static function redirect($ctrl = 'home', $func = 'index', $req = array())
+	public static function redirect($ctrl, $func = 'index', $req = array())
 	{
 		header('Location: ' . util::href($ctrl, $func, $req));
 	}
 	
-	public static function link($body = 'Home', $ctrl = 'home', $func = 'index', $req = array())
+	public static function link($body, $ctrl, $func = 'index', $req = array())
 	{
 		return '<a href="' . util::html(util::href($ctrl, $func, $req)) . '">' . util::html($body) . '</a>';
 	}
