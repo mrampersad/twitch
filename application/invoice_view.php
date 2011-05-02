@@ -21,19 +21,25 @@ class invoice_view
 		//html::text($this->ctrl->invoice->status);
 		html::text($this->ctrl->invoice->date);
 		html::text($this->ctrl->invoice->po_number);
-		html::text($this->ctrl->invoice->discount);
+		//html::text($this->ctrl->invoice->discount);
 		html::text($this->ctrl->invoice->notes);
 		html::text($this->ctrl->invoice->currency_code);
 		echo '</div>';
 		
-		echo html::select($this->ctrl->invoice->status);
+		echo html::select($this->ctrl->invoice->discount);
 		
-		foreach(array('draft' => 'Draft', 'sent' => 'Sent', 'paid' => 'Paid') as $k => $v)
+		foreach(array('5' => '5% Sale', '10' => '10% Employee') as $k => $v)
 		{
-			html::option($this->ctrl->invoice->status, $k, $v);
+			html::option($this->ctrl->invoice->discount, $k, $v);
 		}
 		
 		echo html::select_end();
+		
+		foreach(array('draft' => 'Draft', 'sent' => 'Sent', 'paid' => 'Paid') as $k => $v)
+		{
+			html::checkbox($this->ctrl->invoice->status, $k);
+			echo html::esc($v) . "<br />\n";
+		}
 		
 		echo '<input type="submit" name="action[set]" value="Save" />';
 		echo '<input type="submit" name="action[line_new]" value="Add Line" />';

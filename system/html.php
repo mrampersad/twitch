@@ -10,49 +10,32 @@ class html
 		return $s;
 	}
 	
-	public static function text(field $field, $extra = '') { printf('<input type="text" %s name="%s" value="%s" />', $extra, $field->name, html::esc($field->value)); }
+	public static function text(field $field, $extra = '')
+	{
+		printf('<input type="text" %s name="%s[]" value="%s" />', $extra, $field->name, html::esc($field->value));
+	}
+	
+	public static function textarea(field $field, $extra = '')
+	{
+		printf('<textarea %s name="%s[]">%s</textarea>', $extra, $field->name, html::esc($field->value));
+	}
 	
 	public static function radio(field $field, $value, $extra = '')
 	{
-		if($field-value == $value) $extra .= ' checked="checked"';
-		printf('<input type="radio" %s name="%s" value="%s" />', $extra, $field->name, html::esc($value));
+		if(in_array($value, explode(',', $field->value))) $extra .= ' checked="checked"';
+		printf('<input type="radio" %s name="%s[]" value="%s" />', $extra, $field->name, html::esc($value));
 	}
 	
 	public static function select(field $field, $extra = '')
 	{
-		switch($field->type)
-		{
-			case 0:
-				$name = $field->name;
-				break;
-			case 1:
-				$name = $field->name . '[]';
-				$extra .= ' multiple="multiple"';
-				break;
-			default:
-				throw new Exception('FIELD Error');
-		}
-		
-		printf('<select %s name="%s">', $extra, $name);
+		printf('<select %s name="%s[]">', $extra, $field->name);
 	}
 	
 	public static function select_end() { printf('</select>'); }
 	
 	public static function option(field $field, $value, $name, $extra = '')
 	{
-		switch($field->type)
-		{
-			case 0:
-				$selected = $field->value == $value;
-				break;
-			case 1:
-				$selected = in_array($value, explode(',', $field->value));
-				break;
-			default:
-				throw new Exception('FIELD Error');
-		}
-		
-		if($selected) $extra .= ' selected="selected"';
+		if(in_array($value, explode(',', $field->value))) $extra .= ' selected="selected"';
 		printf('<option %s value="%s">%s</option>', $extra, html::esc($value), html::esc($name));
 	}
 	
