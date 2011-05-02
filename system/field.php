@@ -2,14 +2,14 @@
 
 class field
 {
-	public $name, $value, $type;
+	public $name, $value, $required;
 	protected $tx_value;
 
 	public function __construct($value = null)
 	{
 		$this->name = uuid::gen();
 		$this->value = $value;
-		$this->type = 0;
+		$this->required = true;
 		
 		dtc::get_instance()->register($this);
 	}
@@ -30,7 +30,7 @@ class field
 		}
 		else
 		{
-			if($this->type == 0) throw new Exception('POST Error');
+			if($this->required) throw new Exception('POST Error');
 			$this->value = null;
 		}
 	}

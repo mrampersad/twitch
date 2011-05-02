@@ -11,8 +11,8 @@ class invoice extends orm
 		parent::__construct('invoice');
 		$this->data = field::array_from_string('id,rev,client_id,number,status,date,po_number,discount,notes,currency_code');
 		
-		$this->data['discount']-> type = 1;
-		$this->data['status']->type = 1;
+		$this->data['discount']->required = false;
+		//$this->data['status']->required = true;
 		
 		$this->line = new dtc_array();
 		$this->line_del = new dtc_array();
