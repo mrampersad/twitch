@@ -29,7 +29,7 @@ class field
 				if($this->value === '') $this->value = null;
 				break;
 			case 1:
-				if(isset($_POST[$this->name]) && !is_array($_POST[$this->name])) throw new Exception('POST Error');
+				if(isset($_POST[$this->name]) && !is_array($_POST[$this->name])) throw new Exception('POST Error:' . print_r($_POST[$this->name], true));
 				$this->value = empty($_POST[$this->name]) ? null : join(',', $_POST[$this->name]);
 				break;
 			default:

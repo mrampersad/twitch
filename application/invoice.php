@@ -10,6 +10,9 @@ class invoice extends orm
 	{
 		parent::__construct('invoice');
 		$this->data = field::array_from_string('id,rev,client_id,number,status,date,po_number,discount,notes,currency_code');
+		
+		$this->data['status']->type = 1;
+		
 		$this->line = new dtc_array();
 		$this->line_del = new dtc_array();
 	}

@@ -18,13 +18,22 @@ class invoice_view
 		echo '<div>';
 		html::text($this->ctrl->invoice->client_id);
 		html::text($this->ctrl->invoice->number);
-		html::text($this->ctrl->invoice->status);
+		//html::text($this->ctrl->invoice->status);
 		html::text($this->ctrl->invoice->date);
 		html::text($this->ctrl->invoice->po_number);
 		html::text($this->ctrl->invoice->discount);
 		html::text($this->ctrl->invoice->notes);
 		html::text($this->ctrl->invoice->currency_code);
 		echo '</div>';
+		
+		echo html::select($this->ctrl->invoice->status);
+		
+		foreach(array('draft' => 'Draft', 'sent' => 'Sent', 'paid' => 'Paid') as $k => $v)
+		{
+			html::option($this->ctrl->invoice->status, $k, $v);
+		}
+		
+		echo html::select_end();
 		
 		echo '<input type="submit" name="action[set]" value="Save" />';
 		echo '<input type="submit" name="action[line_new]" value="Add Line" />';
