@@ -19,7 +19,24 @@ class field
 		dtc::get_instance()->register($this);
 	}
 	
-	public function post() { $this->value = $this->type ? isset($_POST[$this->name]) : html::pget($this->name); }
+	public function post()
+	{
+		switch($this->type)
+		{
+			case 0:
+				if(!isset($_POST[$this->name])) throw new Exception('POST Error');
+				$this->value = trim($_POST[$this->name]);
+				if($this->value === '') $this->value = null;
+				break;
+			case 1:
+				if(isset($_POST[$this->name]) && !is_array($_POST[$this->name])) throw new Exception('POST Error');
+				$this->value = empty($_POST[$this->name]) ? null : join(',', $_POST[$this->name]);
+				break;
+			default:
+				throw new Exception('Type not implemented.');
+		}
+	}
+	
 	public function __toString() { return (string)$this->value; }
 	
 	public function begin() { $this->tx_value = $this->value; }
