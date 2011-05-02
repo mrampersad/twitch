@@ -35,7 +35,7 @@ class util
 	
 	public static function html($s)
 	{
-		return htmlentities($s, ENT_COMPAT, 'UTF-8');
+		return html::esc($s);
 	}
 }
 
