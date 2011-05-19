@@ -9,10 +9,7 @@ class invoice extends orm
 	public function __construct()
 	{
 		parent::__construct('invoice');
-		$this->data = field::array_from_string('id,rev,client_id,number,status,date,po_number,discount,notes,currency_code');
-		
-		$this->data['discount']->required = false;
-		//$this->data['status']->required = true;
+		$this->data = field::array_from_string('id,rev,client_id,number,status,date,po_number,discount*,notes,currency_code');
 		
 		$this->line = new dtc_array();
 		$this->line_del = new dtc_array();
@@ -59,6 +56,8 @@ class invoice extends orm
 	
 	public function set_helper()
 	{
+		validator::validate_array($this->data, 'client_id:required&date:date');
+	
 		parent::set_helper();
 		
 		foreach($this->line as $line)

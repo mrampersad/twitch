@@ -18,9 +18,7 @@ class state
 			$row = $db->query('select * from `state` where `id`=? and `session_id`=?', $id, session::get_instance()->id)->fetch();
 			if(!$row) throw new Exception();
 			$obj = unserialize($row['data']);
-			$session = session::get_instance();
 			call_user_func(array($obj, $function));
-			$session->save();
 		}
 		else
 		{

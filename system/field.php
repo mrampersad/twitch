@@ -41,7 +41,18 @@ class field
 	public function commit() { }
 	public function rollback() { $this->value = $this->tx_value; }
 	
-	public static function array_from_string($s) { $result = array(); foreach(explode(',', $s) as $k) $result[$k] = new field(); return $result; }
+	public static function array_from_string($s)
+	{
+		$result = array();
+		foreach(explode(',', $s) as $v)
+		{
+			if(!preg_match('/^(.*?)(\*?)$/', $v, $m)) throw new Exception();
+			$result[$m[1]] = new field();
+			if($m[2]) $result[$m[1]]->required = false;
+		}
+		return $result;
+	}
+	
 	public static function to_array($a) { $r = array(); foreach($a as $k => $v) $r[$k] = $v->value; return $r; }
 	public static function array_load($f, $a) { foreach($a as $k => $v) $f[$k]->value = $v; }
 }

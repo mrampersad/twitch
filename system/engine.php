@@ -22,6 +22,8 @@ class engine
 		}
 
 		state::run($controller, $function);
+		
+		session::get_instance()->save();
 	}
 }
 

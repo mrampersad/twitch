@@ -1,6 +1,6 @@
 <?php
 
-class home_ctrl extends ctrl
+class home_ctrl extends my_ctrl
 {
 	public $ex;
 	public $invoice;
@@ -8,7 +8,8 @@ class home_ctrl extends ctrl
 
 	public function __construct()
 	{
-		//parent::__construct();
+		parent::__construct();
+		
 		$this->invoice = new invoice();
 		
 		if(!empty($_GET['id']))
@@ -32,8 +33,8 @@ class home_ctrl extends ctrl
 		
 		try
 		{
-			html::dop($this->invoice->data(), 'client_id,number,status,date,po_number,discount,notes,currency_code');
-			foreach($this->invoice->line() as $line) html::dop($line->data(), 'name,description,unit_cost,quantity,tax1_name,tax2_name,type');
+			html::dop($this->invoice->data(), 'client_id,number,date,po_number,notes');
+			foreach($this->invoice->line() as $line) html::dop($line->data(), 'name,description,unit_cost,quantity,tax1_name,tax2_name');
 			
 			switch(key($_POST['action']))
 			{

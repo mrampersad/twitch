@@ -30,6 +30,7 @@ table
 
 td
 {
+	vertical-align: top;
 	border: 1px solid black;
 	padding: 0.25em;
 }

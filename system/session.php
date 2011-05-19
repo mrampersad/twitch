@@ -43,7 +43,6 @@ class session
 		if(empty($_COOKIE['id']))
 		{
 			$this->data['id'] = uuid::gen();
-			$this->data['created'] = new db_expression('now()');
 			setcookie('id', $this->data['id'], 0, '/', '', true, true);
 			$this->save();
 		}
@@ -52,7 +51,6 @@ class session
 	public function save()
 	{
 		$db = config::session_db();
-		$this->data['accessed'] = new db_expression('now()');
 
 		$args = array(0 => '');
 		foreach($this->data as $k => $v)
